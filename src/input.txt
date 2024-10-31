@@ -1,25 +1,11 @@
+   list
+insert McDonald’s,Hamburger
+insert McDonald’s,McDouble
+insert     Burger King,Chicken Nuggets- 6pc
+insert    KFC,KENTUCKY FRIED WINGS Honey BBQ
+insert Food that is not there
+insert     Taco Bell,Soft Taco – Chicken
 
-insert 111
-             insert 23
-
-insert 99
-insert         4
-
-isEmpty
-
-    insert     111
-
-print
-
-
-search 9
-
-remove 23
-
-remove 4
-remove 999999
-isEmptyasfh
-print
-
-insert 123
-print
+remove McDonald’s,McDouble
+printbestoption
+RankOptions

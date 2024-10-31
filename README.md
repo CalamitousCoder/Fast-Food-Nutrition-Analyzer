@@ -1,141 +1,36 @@
-# Project 1 @ CSC 201 Fall 2024: Binary Search Tree (Part 1)
 
-## Pledged Work Policy
+# Fast-Food Nutrition Database Program
+## Summary
+This program allows users to interact with a fast-food nutrition database by executing commands from an input file. Users can list all menu items, insert or delete food items by brand and name, print the lowest-calorie option, and rank items from least to most caloric. The program uses a binary search tree (BST) to manage and search data efficiently.
 
-This is a ___Pledged Work___ assignment.  This means that the work you submit for grading ___must___ be your work product.  
-You may not submit the work of others outside of your team , or the modification of work of others outside of your team.
-You are encouraged to talk with each other about general problems.  For example, you may talk to someone about "What does it mean when the compiler says there is a semicolon missing on line 20", or "I can not get my assignment template to download from GitHub, what did you do?".  However, you may not engage in "Could you send me a copy of your work so I can see how to get started?".  You may get full and detailed assistance from me, the Teaching Assistant (TA), and the TAs in the Computer Science Center.  If you have any question about the appropriateness of assistance, do not hesitate to consult with me.
+## How It's Made
+Concepts Used: Data structures (BST, ArrayLists), file I/O, method-driven design, encapsulation, and a simulated command interface.
 
-If I believe you have violated our ___Pledge Work___ agreement, I will pursue this matter through the college Honor Council.
+### Classes Overview
 
-## Overview
+Main: The Main class provides a setup for reading and initializing the dataset, displays command instructions, and then hands control to the Parser. If the "list" command was used, Main outputs all items in the database.
 
-Database software typically comprises two essential components: an interface for user interaction and a data structure for storing data and supporting various functions. This project involves the creation of a program that manages a Binary Search Tree (BST).
+  setListWasCalled: A helper method that tracks if the user has requested to list the database.
 
-In this project, you will implement: 
+Parser: Parser is responsible for interpreting commands from an input file, validating them, and calling the relevant database operations within the BST. It streamlines the command interpretation and checks for formatting.
 
-1. A generic BST with iterator interface.
-2. A parser capable of reading and processing input commands.
+  process: Reads each line in the input file, parses valid commands, and discards redundant or         incorrectly formatted lines.
+ 
+  operate_BST: Maps each command to its corresponding BST operation and provides detailed feedback     based on success or failure, including duplicate insertion tracking and error reporting for non-     existent items.
 
-## Invocation and I/O Files:
+BST (Binary Search Tree): This class is used to store the FastFoodNutritionInfo objects, enabling efficient insertions, deletions, and calorie-based ranking.
 
-The name of the program is `Proj1` ( provided with a `main` method in`Proj1.java` ). 
+  rankedCaloricPrint: Lists all items in ascending order of calories by traversing the tree, which     is useful for ranking options in a health-conscious way.
 
-You are encouraged to run and debug code in __IntelliJ IDEA__. Also, the program can be invoked from the command-line as:
+  getMin: Quickly retrieves the item with the lowest calorie count in the database, optimizing the     “PrintBestOption” command.
 
-```shell
-java Proj1 {command-file}
-```
+FastFoodNutritionInfo:This class holds details about each menu item, such as brand, item name, calories, and other nutritional data. It includes helper methods to retrieve item details based on user input.
 
-For Sections 1 and 2, your program will read a series of commands from the input file `input.txt` and generate the output file  `result.txt`, which will be used for grading.
+  getFFNFromItemAndCompany: A factory-like method that searches the dataset for an item based on       brand and name, supporting validation and error handling.
 
+# Lessons Learned
+1. Data Structures in Practice: Implementing a BST for managing food items emphasized the efficiency    of sorted data structures, especially for calorie-based ranking and searching.
 
-## 1. **Generic BST with Iterator Interface**
+2. Error Handling and Command Parsing: Parsing text commands reinforced the importance of validating    user input and accounting for common errors, ensuring a smooth user experience without failures      due to incorrect inputs.
 
-In this part, you will construct **a generic and iterable Binary Search Tree (BST)**.  
-
-First, create a `Node` class with **Comparable interface** to represent nodes of the BST. Each node should encompass a value, references to both left and right subtrees, along with necessary utility methods as instructed in file `Node.java`.
-
-Then, develop a `BST` class to manage the structure of BST. Please finish the implementation in file `BST.java`.
-
-Make sure these operations of BST are handled in a general way that does not require the BST to understand the type of its elements. For example, the `value` in `Node` may be a user-defined data structure with `Comparable` interface, necessitating the use of `compareTo() ` method for comparison.
-
-## 2. **Parse Input Commands**
-
-Your program will read a series of commands from the input file, with one command per line. The commands are free-format in that any number of spaces may come before, between, or after the command name and its parameters.
-
-You're going to implement `process()` ,`operate_BST() `, and `writeToFile()` methods in `Parser` class for this part.
-
-In `process()` method, you will read the command file line by line, remove redundant spaces, ignore blank lines, to handle different input formatting. 
-
-Then, you need to split each line into string array `command`, then create your  `operate_BST(String[] command)` method to test your BST. 
-
-After this, use the `writeToFile()` method to write your BST result into `result.txt`. In the `writeToFile()` method, you're asked to open the specified file (create it if it doesn't exist), append a new line at the end of the file, and write the output  (`String content`).
-
-The `BST` class shall support the following commands. (Check example commands in the provided input file):
-
-+ `insert val`: 
-
-  Insert a new `Node` with value of `val` into BST. Write `insert <val>` to `result.txt`.
-
-  ```
-  ## sample input.txt
-  insert 23
-  
-  ## sample result.txt
-  insert 23
-  ```
-
-+ `search val`: 
-
-  Searches the BST to find out if a node with value `val` exists.
-
-  If found, return the `Node`, and write `found <val>` to `result.txt`, otherwise return `null` and write `search failed` to `result.txt`.
-
-  ```
-  ## sample input.txt
-  search 23
-  search 114
-  
-  ## sample result.txt
-  found 23
-  search failed
-  ```
-
-+ `remove val`:
-
-  Removes a node with value `val` from the BST, return this node, and write `removed <val>` to `result.txt`. If the value does not exist in the tree, return `null` and write `remove failed` to `result.txt`.
-
-  ```
-  ## sample input.txt
-  remove 23
-  remove 114
-  
-  ## sample result.txt
-  removed 23
-  remove failed
-  ```
-
-+ `print`:
-
-   Implement an iterator in class `BST`, and print out elements in the BST in ascending order to  `result.txt`. 
-
-  ```
-  ## sample input.txt
-  print
-  ## sample result.txt
-  2 3 44 214
-  ```
-  
-+ invalid command:
-
-   Write `Invalid Command` to `result.txt`. 
-   
-   ```
-   ## sample input.txt
-   Hello CSC 201
-   
-   ## sample result.txt
-   Invalid Command
-   ```
-
-Note that you need to **implement an iterator** interface that enables the iterator to traverse all nodes in the BST in ascending order. 
-
-## Submission:
-
-Your project will be developed and graded via GitHub. Your final "push" is your final submission, and it must occur before it is due. On Canvas, enter the url to your Github repository. Your project will not be graded without it.
-
-## Recommendations:
-
-I ___strongly suggest___ that you carefully think through your strategy before just jumping into the code.  Once that is working, start adding in new features individually.  A good place to start is building your class.
-
-*In order to get full points of Commenting and Code Style, you need to add comments to every methods and head comments for each file (providing file description, author, date, and acknowledgement).
-
-```
-/∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗*
-∗ @file: filename.java
-∗ @description: This program implements . . .
-∗ @author: Your Name
-∗ @date: September 20 , 2024
-∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗∗/
-```
+3. File I/O and Persistence: Writing results to an output file taught practical aspects of file I/O,     including the importance of closing resources and handling exceptions to ensure data integrity
